@@ -26,13 +26,15 @@ const Body = () => {
   };
 
   useEffect(() => {
-    if (!userData && location.pathname !== '/login') fetchUser();
+    if (!userData && location.pathname !== "/login") fetchUser();
   }, []);
 
   return (
     <div>
       <Navbar />
-      <Outlet />
+      <div className="mb-17 py-6">
+        <Outlet />
+      </div>
       <Footer />
     </div>
   );

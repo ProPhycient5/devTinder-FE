@@ -4,11 +4,12 @@ import { useDispatch } from "react-redux";
 import { addUser } from "../utils/userSlice";
 import { useNavigate } from "react-router";
 import { BASE_URL } from "../utils/constants";
+import { handleShowToast } from "../utils/toastSlice";
 
 const Login = () => {
   const [email, setEmail] = useState("rahul@gmail.com");
   const [password, setPassword] = useState("passWord@7");
-  const [error, setError] = useState("")
+  const [error, setError] = useState("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -20,19 +21,23 @@ const Login = () => {
           email,
           password,
         },
-        { withCredentials: true }
+        { withCredentials: true },
       );
       console.log(res);
       dispatch(addUser(res.data));
+      dispatch(handleShowToast(true));
       navigate("/");
+      setTimeout(() => {
+        dispatch(handleShowToast(false));
+      }, 4000);
     } catch (err) {
-      setError(err?.response?.data || "Something went wrong")
+      setError(err?.response?.data || "Something went wrong");
       console.log(err);
     }
   };
 
   return (
-    <div className="flex justify-center my-5">
+    <div className="flex justify-center">
       <div className="card card-border bg-base-200 w-96">
         <div className="card-body">
           <h2 className="card-title justify-center">Login</h2>
