@@ -23,7 +23,6 @@ const Login = () => {
         },
         { withCredentials: true },
       );
-      console.log(res);
       dispatch(addUser(res.data));
       dispatch(handleShowToast(true));
       navigate("/");
@@ -32,7 +31,7 @@ const Login = () => {
       }, 4000);
     } catch (err) {
       setError(err?.response?.data || "Something went wrong");
-      console.log(err);
+      console.error(err);
     }
   };
 

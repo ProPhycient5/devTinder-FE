@@ -1,20 +1,36 @@
 import axios from "axios";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { BASE_URL } from "../utils/constants";
 import { useDispatch, useSelector } from "react-redux";
-import { addRequest } from "../utils/requestSlice";
+import { addRequest, removeRequest } from "../utils/requestSlice";
 
 const Requests = () => {
   const dispatch = useDispatch();
   const requests = useSelector((store) => store.request);
+  const [loading, setLoading] = useState(true);
 
   const fetchRequests = async () => {
     try {
       const res = await axios.get(BASE_URL + "/user/requests/received", {
         withCredentials: true,
       });
-      console.log("request", res.data);
       dispatch(addRequest(res.data.data));
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleReviewRequest = async (status, requestId) => {
+    try {
+      const res = await axios.post(
+        `${BASE_URL}/request/review/${status}/${requestId}`,
+        {},
+        { withCredentials: true },
+      );
+      console.log(res.data);
+      dispatch(removeRequest(requestId));
     } catch (err) {
       console.error(err);
     }
@@ -24,10 +40,12 @@ const Requests = () => {
     fetchRequests();
   }, []);
 
+  if (loading) return <Skeleton />;
+
   if (requests.length === 0)
     return (
       <h1 className="text-center textarea-lg text-gray-200 py-6">
-        There is no requests
+        No request found.
       </h1>
     );
 
@@ -42,7 +60,11 @@ const Requests = () => {
           return (
             <li className="list-row" key={_id}>
               <div>
-                <img className="size-20 rounded-box" src={photoUrl} />
+                <img
+                  alt="profile pic"
+                  className="size-20 rounded-box"
+                  src={photoUrl}
+                />
               </div>
               <div className="flex justify-center items-center gap-8">
                 <div>
@@ -54,14 +76,49 @@ const Requests = () => {
                   )}
                 </div>
                 <div className="flex gap-2">
-                  <button className="btn btn-info">Ignore</button>
-                  <button className="btn btn-success">Accept</button>
+                  <button
+                    className="btn btn-info"
+                    onClick={() => handleReviewRequest("rejected", request._id)}
+                  >
+                    Reject
+                  </button>
+                  <button
+                    className="btn btn-success"
+                    onClick={() => handleReviewRequest("accepted", request._id)}
+                  >
+                    Accept
+                  </button>
                 </div>
               </div>
             </li>
           );
         })}
       </ul>
+    </div>
+  );
+};
+
+const Skeleton = () => {
+  return (
+    <div className="flex flex-col items-center justify-center gap-4 w-full">
+      <div className="flex w-80 flex-col gap-4">
+        <div className="flex items-center gap-4">
+          <div className="skeleton h-16 w-16 shrink-0 rounded-full"></div>
+          <div className="skeleton h-24 w-full"></div>
+        </div>
+      </div>
+      <div className="flex w-80 flex-col gap-4">
+        <div className="flex items-center gap-4">
+          <div className="skeleton h-16 w-16 shrink-0 rounded-full"></div>
+          <div className="skeleton h-24 w-full"></div>
+        </div>
+      </div>
+      <div className="flex w-80 flex-col gap-4">
+        <div className="flex items-center gap-4">
+          <div className="skeleton h-16 w-16 shrink-0 rounded-full"></div>
+          <div className="skeleton h-24 w-full"></div>
+        </div>
+      </div>
     </div>
   );
 };
