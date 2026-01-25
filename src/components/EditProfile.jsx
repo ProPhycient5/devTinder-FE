@@ -124,7 +124,7 @@ const EditProfile = ({ user }) => {
           </div>
         </div>
       </div>
-      <UserCard user={userInfo} />
+      <UserCard user={userInfo} page={"PROFILE"}/>
       {showToast && <Toast message={"Profile saved successfully."} />}
     </div>
   );
