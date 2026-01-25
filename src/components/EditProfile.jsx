@@ -10,8 +10,8 @@ const EditProfile = ({ user }) => {
   const [userInfo, setUserInfo] = useState({
     firstName: user?.firstName,
     lastName: user?.lastName,
-    age: user?.age,
-    gender: user?.gender,
+    age: user?.age || "",
+    gender: user?.gender || "",
     bio: user?.bio,
     photoUrl: user?.photoUrl,
   });
