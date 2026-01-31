@@ -32,3 +32,10 @@ If you are developing a production application, we recommend using TypeScript wi
   - Copy code from dist(build files) to /var/www/html/
   - sudo scp -r dist/* /var/www/html
   - Enable port :80 of your instance
+
+- Backend:
+  - allowed EC2 instance public IP on mongodb server
+  - npm install pm2 -g
+  - pm2 start npm -- start  
+  - pm2 logs
+  - pm2 list, pm2 flush <name>, pm2 stop <name>, pm2 delete <name>
