@@ -14,3 +14,21 @@ The React Compiler is not enabled on this template because of its impact on dev 
 ## Expanding the ESLint configuration
 
 If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+
+## Deployment
+- Signup on AWS
+- Launch instance (by opting the configuration - Ubuntu)
+- chmod 400 <secret-key>.pem
+- ssh -i "devTinder-secret.pem" ubuntu@ec2-13-51-242-85.eu-north-1.compute.amazonaws.com
+- Install node v24.11.0
+- Git clone <repo-link>
+- Frontend:
+  - npm install
+  - npm run build
+  - sudo apt update
+  - sudo apt install nginx
+  - sudo systemctl start nginx
+  - sudo systemctl enable nginx
+  - Copy code from dist(build files) to /var/www/html/
+  - sudo scp -r dist/* /var/www/html
+  - Enable port :80 of your instance
