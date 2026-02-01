@@ -13,6 +13,7 @@ const Feed = () => {
   const [loading, setLoading] = useState(true);
 
   const fetchFeed = async () => {
+    if (feed) return;
     try {
       const res = await axios.get(BASE_URL + "/user/feed", {
         withCredentials: true,
@@ -28,6 +29,8 @@ const Feed = () => {
   useEffect(() => {
     fetchFeed();
   }, []);
+
+  if (!feed) return;
 
   if (loading) return <Skeleton />;
 
