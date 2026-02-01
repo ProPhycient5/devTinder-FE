@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
-import { Outlet, useNavigate, useLocation } from "react-router";
+import { Outlet, useNavigate } from "react-router";
 import axios from "axios";
 import { BASE_URL } from "../utils/constants";
 import { useDispatch, useSelector } from "react-redux";
@@ -10,10 +10,10 @@ import { addUser } from "../utils/userSlice";
 const Body = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const location = useLocation();
   const userData = useSelector((store) => store.user);
 
   const fetchUser = async () => {
+    if (userData) return;
     try {
       const res = await axios.get(BASE_URL + "/profile/view", {
         withCredentials: true,
@@ -26,7 +26,7 @@ const Body = () => {
   };
 
   useEffect(() => {
-    if (!userData && location.pathname !== "/login") fetchUser();
+    fetchUser();
   }, []);
 
   return (
